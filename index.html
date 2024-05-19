@@ -1,0 +1,242 @@
+<doctype html>
+    <html>
+
+    <head>
+        <title> 2048 </title>
+        <link rel="stylesheet" type="text/css" href="2048.css">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" href="./favicon.ico">
+    </head>
+
+    <body>
+
+        <div id="container-2048" class="container">
+            <div class="heading">
+                <h1 class="title">2048</h1>
+                <div class="score-container">0</div>
+            </div>
+            <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
+
+
+            <div class="game-container">
+                <div class="game-message">
+                    <p></p>
+                    <div class="lower">
+                        <a class="retry-button">Try again</a>
+                    </div>
+                </div>
+
+                <div class="grid-container">
+                    <div class="grid-row">
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                    </div>
+                    <div class="grid-row">
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                    </div>
+                    <div class="grid-row">
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                    </div>
+                    <div class="grid-row">
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                    </div>
+                </div>
+
+                <div class="tile-container">
+
+                </div>
+            </div>
+
+        </div>
+        <div class="gesture-container">
+            <p id="no-webcam">No webcam found. <br />
+                To use this demo, use a device with a webcam.</p>
+            <h2>Gesture Training</h2>
+
+            <div class="button-panel">
+                <div class="btn train-button" id="train">Train</div>
+                <div class="btn play-button" id="play">Start Playing</div>
+
+            </div>
+            <div id="status">Loading mobilenet...</div>
+            <div id="train-status"></div>
+
+            <div class="webcam-box-inner">
+                <video autoplay playsinline muted id="webcam" width="224" height="224"></video>
+            </div>
+            <div class="hyper-params">
+
+                <div class="dropdown">
+                    <label>Learning rate</label>
+                    <div class="select">
+                        <select id="learningRate">
+                            <option value="0.00001">0.00001</option>
+                            <option selected value="0.0001">0.0001</option>
+                            <option value="0.01">0.001</option>
+                            <option value="0.03">0.003</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <label>Batch size</label>
+                    <div class="select">
+                        <select id="batchSizeFraction">
+                            <option value="0.05">0.05</option>
+                            <option value="0.1">0.1</option>
+                            <option selected value="0.4">0.4</option>
+                            <option value="1">1</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <label>Epochs</label>
+                    <div class="select">
+                        <select id="epochs">
+                            <option value="10">10</option>
+                            <option selected value="20">20</option>
+                            <option value="40">40</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <label>Hidden units</label>
+                    <div class="select">
+                        <select id="dense-units">
+                            <option value="10">10</option>
+                            <option selected value="100">100</option>
+                            <option value="200">200</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="controller-panels" id="controller">
+
+            </div>
+
+            <button id="toggleButton">Hide</button>
+
+            <div class="panel training-panel" id="trainingPanel">
+
+                <div class="panel-row panel-row-top">
+
+                    <div class="panel-cell panel-cell-center">
+                        <div class="thumb-box">
+                            <div class="thumb-box-outer">
+                                <div class="thumb-box-inner">
+                                    <canvas class="thumb" width=224 height=224 id="up-thumb"></canvas>
+                                </div>
+                                <button class="record-button" id="up" /><span>Add Sample</span></button>
+                            </div>
+                            <p>Move Up<br />
+                                <span id="up-total">0</span> examples
+                            </p>
+                        </div>
+                    </div>
+                    <div class="panel-cell panel-cell-left">
+                        <div class="thumb-box">
+                            <div class="thumb-box-outer">
+                                <div class="thumb-box-inner">
+                                    <canvas class="thumb" width=224 height=224 id="down-thumb"></canvas>
+                                </div>
+                                <button class="record-button" id="down" /><span>Add Sample</span></button>
+                            </div>
+                            <p>Move Down<br />
+                                <span id="down-total">0</span> examples
+                            </p>
+                        </div>
+                    </div>
+                    <div class="panel-cell panel-cell-center">
+                        <div class="thumb-box">
+
+                            <div class="thumb-box-outer">
+                                <div class="thumb-box-inner">
+                                    <canvas class="thumb" width=224 height=224 id="left-thumb"></canvas>
+                                </div>
+                                <button class="record-button" id="left" /><span>Add Sample</span></button>
+                            </div>
+                            <p>Move Left<br />
+                                <span id="left-total">0</span> examples
+                            </p>
+                        </div>
+                    </div>
+                    <div class="panel-cell panel-cell-center">
+                        <div class="thumb-box">
+
+                            <div class="thumb-box-outer">
+                                <div class="thumb-box-inner">
+                                    <canvas class="thumb" width=224 height=224 id="right-thumb"></canvas>
+                                </div>
+                                <button class="record-button" id="right" /><span>Add Sample</span></button>
+                            </div>
+                            <p>Move Right<br />
+                                <span id="right-total">0</span> examples
+                            </p>
+                        </div>
+                    </div>
+                    <div class="panel-cell panel-cell-center">
+                        <div class="thumb-box">
+
+                            <div class="thumb-box-outer">
+                                <div class="thumb-box-inner">
+                                    <canvas class="thumb" width=224 height=224 id="noaction-thumb"></canvas>
+                                </div>
+                                <button class="record-button" id="noaction" /><span>Add Sample</span></button>
+                            </div>
+                            <p>No Action<br />
+                                <span id="noaction-total">0</span> examples
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+        <script src="hammer.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.14.1/dist/tf.min.js"></script>
+        <script src="2048.js"></script>
+        <script src="webcam.js"></script>
+        <script src="controller_dataset.js"></script>
+        <script src="ui.js"></script>
+        <script src="script.js"></script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var toggleButton = document.getElementById("toggleButton");
+                var trainingPanel = document.getElementById("trainingPanel");
+
+                toggleButton.addEventListener("click", function () {
+                    if (trainingPanel.style.display === "none") {
+                        trainingPanel.style.display = "block";
+                    } else {
+                        trainingPanel.style.display = "none";
+                    }
+                });
+            });
+
+        </script>
+        <footer id="footer">
+            <p>Copyright &copy; 2024 All right reserved | Made by <b><a href="#">Salma Aljimmali</a></b></p>
+        </footer>
+
+    </body>
+
+    </html>
